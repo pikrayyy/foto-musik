@@ -1,41 +1,73 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Web Pikrayyy</title>
+  <title>Halaman Musik & Foto</title>
   <style>
-    body { text-align: center; font-family: sans-serif; margin: 30px; background: #f5f5f5; }
-    img { width: 300px; border-radius: 10px; }
-    audio { margin-top: 20px; width: 300px; }
-    .marquee {
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #1e1e1e, #3a3a3a);
       overflow: hidden;
-      white-space: nowrap;
-      background: #333;
+      font-family: 'Courier New', monospace;
+      text-align: center;
       color: white;
-      padding: 10px;
-      font-weight: bold;
-      margin-top: 30px;
-      border-radius: 5px;
     }
-    .marquee span {
-      display: inline-block;
-      padding-left: 100%;
-      animation: jalan 10s linear infinite;
+
+    img {
+      margin-top: 40px;
+      max-width: 90%;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(255, 255, 255, 0.2);
     }
-    @keyframes jalan {
-      0% { transform: translateX(0); }
-      100% { transform: translateX(-100%); }
+
+    audio {
+      margin-top: 20px;
+    }
+
+    .falling-text {
+      position: absolute;
+      white-space: nowrap;
+      font-size: 20px;
+      animation: fall linear forwards;
+    }
+
+    @keyframes fall {
+      0% { top: -30px; opacity: 1; }
+      100% { top: 100%; opacity: 0; }
     }
   </style>
 </head>
 <body>
-  <h1>Selamat Datang di Web Pikrayyy!</h1>
-  <img src="https://files.catbox.moe/pxvit9.jpeg" alt="Foto Saya" style="max-width: 100%; height: auto;" />
-  <br><br>
-  <audio controls>
-    <source src="https://files.catbox.moe/v4sbkv.mp4" type="audio/mpeg">
+
+  <!-- Foto -->
+  <img src="https://files.catbox.moe/pxvit9.jpeg" alt="Foto Saya" />
+
+  <!-- Musik -->
+  <audio controls autoplay loop>
+    <source src="https://files.catbox.moe/v4sbkv.mp4" type="audio/mp4">
+    Browser tidak mendukung audio.
   </audio>
-  <div class="marquee">
-    <span>jadi orang lama? atau baru? menikmati hidup iya aku lebih memilih menikmati hidup di masa muda yang sekarang tanpa orang baru atau orang lama kecuali keluarga dan teman🎶</span>
-  </div>
+
+  <!-- Efek Teks Berjatuhan -->
+  <script>
+    const words = ["Selamat", "Datang", "di Halaman", "Saya", "🎵", "Nikmati Lagunya", "Terima Kasih", "❤️"];
+    const colors = ["#ff69b4", "#87cefa", "#00ffcc", "#ffa500", "#ffffff"];
+
+    function createFallingText() {
+      const word = words[Math.floor(Math.random() * words.length)];
+      const text = document.createElement("div");
+      text.className = "falling-text";
+      text.style.left = Math.random() * window.innerWidth + "px";
+      text.style.animationDuration = (2 + Math.random() * 3) + "s";
+      text.style.color = colors[Math.floor(Math.random() * colors.length)];
+      text.innerText = word;
+
+      document.body.appendChild(text);
+      setTimeout(() => text.remove(), 5000);
+    }
+
+    setInterval(createFallingText, 300);
+  </script>
+
 </body>
 </html>
