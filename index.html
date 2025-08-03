@@ -3,57 +3,67 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Halaman Aesthetic</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+  <title>System Console</title>
   <style>
     body {
       margin: 0;
-      padding: 0;
-      background: linear-gradient(to bottom right, #ffe6f0, #ccf2ff);
-      font-family: 'Poppins', sans-serif;
-      overflow: hidden;
-      text-align: center;
+      background-color: #000;
+      color: #00ff00;
+      font-family: 'Courier New', monospace;
+      font-size: 16px;
+      padding: 20px;
+      white-space: pre-wrap;
     }
-
-    img {
-      margin-top: 60px;
-      max-width: 85%;
-      border-radius: 20px;
-      box-shadow: 0 12px 30px rgba(0,0,0,0.2);
+    #console {
+      max-width: 100%;
+      word-break: break-word;
     }
-
-    audio {
-      margin-top: 20px;
+    .red-flash {
+      animation: flashRed 0.2s alternate 10;
     }
-
-    .falling-text {
-      position: absolute;
-      white-space: nowrap;
-      font-size: 20px;
-      font-weight: bold;
-      animation: fall linear forwards;
-      pointer-events: none;
-      opacity: 0.8;
-      text-shadow: 0 0 8px rgba(0,0,0,0.3);
-    }
-
-    @keyframes fall {
-      0% { top: -30px; opacity: 1; }
-      100% { top: 100%; opacity: 0; }
+    @keyframes flashRed {
+      from { background-color: black; }
+      to { background-color: darkred; }
     }
   </style>
 </head>
 <body>
+  <div id="console"></div>
 
-  <!-- Foto -->
-  <img src="https://files.catbox.moe/pxvit9.jpeg" alt="Foto Aesthetic" />
-
-  <!-- Musik -->
-  <audio autoplay loop>
-    <source src="https://files.catbox.moe/v4sbkv.mp4" type="audio/mp4">
-    Browser tidak mendukung audio.
-  </audio>
-
-  <!-- Efek teks jatuh -->
   <script>
-    const kata = ["🌸", "✨", "Kenangan
+    const teks = [
+      "[✓] Menghubungkan ke server target...",
+      "[✓] Akses granted: root@device",
+      "[✓] Mengakses kamera...",
+      "[✓] Kamera aktif...",
+      "[✓] Mengambil data kontak...",
+      "[✓] Mengambil file foto (124 ditemukan)...",
+      "[✓] Mengunggah file ke server...",
+      "[✓] Mengakses mikrofon...",
+      "[✓] Merekam suara...",
+      "[!] Deteksi aktivitas pengguna...",
+      "[✓] Melacak lokasi GPS...",
+      "[✓] Mengirim data ke 188.32.19.6...",
+      "[✓] Menghapus data lokal...",
+      "[!] PROSES SELESAI.",
+      "[✓] Perangkat sekarang dikendalikan jarak jauh."
+    ];
+
+    let index = 0;
+    const delay = 800;
+    const consoleEl = document.getElementById("console");
+
+    function tampilkanTeks() {
+      if (index < teks.length) {
+        consoleEl.textContent += teks[index] + "\n";
+        index++;
+        setTimeout(tampilkanTeks, delay);
+      } else {
+        document.body.classList.add("red-flash");
+      }
+    }
+
+    window.onload = tampilkanTeks;
+  </script>
+</body>
+</html>
