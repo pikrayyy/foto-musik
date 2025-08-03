@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>DALAM KAWASAN - PIKRAY</title>
+  <title></title>
   <style>
     html, body {
       margin: 0;
@@ -29,9 +29,11 @@
       text-shadow: 0 0 5px #00ff00;
     }
 
-    #judul {
-      font-size: 22px;
-      font-weight: bold;
+    #judul-atas {
+      text-align: center;
+      font-size: 18px;
+      color: #00ff00;
+      text-shadow: 0 0 8px #00ff00;
       margin-bottom: 20px;
     }
 
@@ -39,18 +41,6 @@
       font-size: 16px;
       white-space: pre-wrap;
       min-height: 200px;
-    }
-
-    #startBtn {
-      margin-top: 20px;
-      padding: 10px 20px;
-      background: #00ff00;
-      border: none;
-      font-weight: bold;
-      font-size: 16px;
-      cursor: pointer;
-      color: #000;
-      border-radius: 8px;
     }
 
     #granted {
@@ -73,17 +63,14 @@
 <canvas id="matrix"></canvas>
 
 <div id="container">
-  <div id="judul">ACCESS TERMINAL: Pikrayyy</div>
+  <div id="judul-atas">DALAM KAWASAN PIKRAY25</div>
   <div id="output"></div>
-  <button id="startBtn">MULAI PRANK</button>
   <div id="granted">✔ ACCESS GRANTED</div>
 </div>
 
-<!-- Suara ketikan -->
 <audio id="typeSound" src="https://files.catbox.moe/xehn4f.mp3" preload="auto"></audio>
 
 <script>
-  // Matrix background
   const canvas = document.getElementById("matrix");
   const ctx = canvas.getContext("2d");
   canvas.height = window.innerHeight;
@@ -98,4 +85,59 @@
     ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.fillStyle = "#0f0";
-    ctx.font
+    ctx.font = fontSize + "px monospace";
+    drops.forEach((y, i) => {
+      const text = letters[Math.floor(Math.random() * letters.length)];
+      const x = i * fontSize;
+      ctx.fillText(text, x, y * fontSize);
+      drops[i] = y * fontSize > canvas.height || Math.random() > 0.975 ? 0 : y + 1;
+    });
+  }
+  setInterval(drawMatrix, 33);
+
+  const teks = [
+    "[✓] Connecting to mainframe...",
+    "[✓] Target: 192.168.2.1",
+    "[✓] Accessing webcam...",
+    "[✓] Data stream active...",
+    "[✓] GPS tracking enabled...",
+    "[✓] Extracting files (97MB)...",
+    "[✓] Sending files to server...",
+    "[✓] Injecting backdoor...",
+    "[✓] System override complete.",
+    "[!] System Breached!"
+  ];
+
+  const output = document.getElementById("output");
+  const granted = document.getElementById("granted");
+  const typeSound = document.getElementById("typeSound");
+
+  let i = 0, j = 0;
+
+  function ketik() {
+    if (i < teks.length) {
+      if (j < teks[i].length) {
+        output.textContent += teks[i].charAt(j);
+        typeSound.currentTime = 0;
+        typeSound.play();
+        j++;
+        setTimeout(ketik, 30);
+      } else {
+        output.textContent += "\n";
+        i++;
+        j = 0;
+        setTimeout(ketik, 300);
+      }
+    } else {
+      granted.style.display = "block";
+    }
+  }
+
+  // Mulai otomatis
+  window.onload = () => {
+    ketik();
+  };
+</script>
+
+</body>
+</html>
