@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>System Console</title>
+  <title>ANDA DALAM KAWASAN - PIKRAY25</title>
   <style>
     body {
       margin: 0;
@@ -13,22 +13,55 @@
       font-size: 16px;
       padding: 20px;
       white-space: pre-wrap;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    #judul {
+      color: #00ff00;
+      font-size: 24px;
+      margin-bottom: 20px;
+      font-weight: bold;
+      text-shadow: 0 0 5px #00ff00;
     }
     #console {
-      max-width: 100%;
+      width: 100%;
+      max-width: 800px;
       word-break: break-word;
+      display: none;
     }
     .red-flash {
-      animation: flashRed 0.2s alternate 10;
+      animation: flashRed 0.2s alternate 20;
     }
     @keyframes flashRed {
       from { background-color: black; }
       to { background-color: darkred; }
     }
+    #startBtn {
+      padding: 12px 24px;
+      background-color: #00ff00;
+      color: #000;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      font-size: 18px;
+      cursor: pointer;
+      margin-bottom: 20px;
+    }
   </style>
 </head>
 <body>
+
+  <h1 id="judul">System Access: Pikrayyy</h1>
+  <button id="startBtn">MULAI SIMULASI</button>
   <div id="console"></div>
+
+  <!-- Suara ketikan -->
+  <audio id="typeSound" src="https://files.catbox.moe/j3mtf5.mp3" loop></audio>
+  <!-- Suara alarm akhir -->
+  <audio id="alarmSound" src="https://files.catbox.moe/31oz8k.mp3"></audio>
 
   <script>
     const teks = [
@@ -49,9 +82,13 @@
       "[✓] Perangkat sekarang dikendalikan jarak jauh."
     ];
 
+    const startBtn = document.getElementById("startBtn");
+    const consoleEl = document.getElementById("console");
+    const typeSound = document.getElementById("typeSound");
+    const alarmSound = document.getElementById("alarmSound");
+
     let index = 0;
     const delay = 800;
-    const consoleEl = document.getElementById("console");
 
     function tampilkanTeks() {
       if (index < teks.length) {
@@ -60,10 +97,17 @@
         setTimeout(tampilkanTeks, delay);
       } else {
         document.body.classList.add("red-flash");
+        typeSound.pause();
+        alarmSound.play();
       }
     }
 
-    window.onload = tampilkanTeks;
+    startBtn.onclick = () => {
+      startBtn.style.display = "none";
+      consoleEl.style.display = "block";
+      typeSound.play();
+      tampilkanTeks();
+    };
   </script>
 </body>
-</html>
+  </html>
