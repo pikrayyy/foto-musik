@@ -1,73 +1,98 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
-  <title>Halaman Musik & Foto</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Musik & Foto Aesthetic</title>
   <style>
     body {
       margin: 0;
       padding: 0;
-      background: linear-gradient(135deg, #1e1e1e, #3a3a3a);
+      background: linear-gradient(to bottom right, #ffe6f0, #cceeff);
+      font-family: 'Poppins', sans-serif;
       overflow: hidden;
-      font-family: 'Courier New', monospace;
-      text-align: center;
-      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: #222;
     }
 
     img {
-      margin-top: 40px;
-      max-width: 90%;
-      border-radius: 20px;
-      box-shadow: 0 8px 20px rgba(255, 255, 255, 0.2);
+      margin-top: 60px;
+      max-width: 85%;
+      border-radius: 25px;
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.3);
+      transition: transform 0.5s ease;
+    }
+
+    img:hover {
+      transform: scale(1.02);
     }
 
     audio {
       margin-top: 20px;
+      background: rgba(255, 255, 255, 0.6);
+      border-radius: 12px;
+      padding: 8px;
+      backdrop-filter: blur(10px);
     }
 
     .falling-text {
       position: absolute;
       white-space: nowrap;
-      font-size: 20px;
+      font-size: 18px;
+      font-weight: bold;
       animation: fall linear forwards;
+      text-shadow: 0 0 10px rgba(255,255,255,0.7);
     }
 
     @keyframes fall {
       0% { top: -30px; opacity: 1; }
       100% { top: 100%; opacity: 0; }
     }
+
+    .title {
+      margin-top: 30px;
+      font-size: 24px;
+      font-weight: 600;
+      color: #444;
+    }
+
   </style>
 </head>
 <body>
 
+  <div class="title">🎶 Selamat Datang 🎶</div>
+
   <!-- Foto -->
-  <img src="https://files.catbox.moe/pxvit9.jpeg" alt="Foto Saya" />
+  <img src="https://files.catbox.moe/pxvit9.jpeg" alt="Foto Aesthetic" />
 
   <!-- Musik -->
   <audio controls autoplay loop>
     <source src="https://files.catbox.moe/v4sbkv.mp4" type="audio/mp4">
-    Browser tidak mendukung audio.
+    Browser kamu tidak mendukung audio.
   </audio>
 
   <!-- Efek Teks Berjatuhan -->
   <script>
-    const words = ["Selamat", "Datang", "di Halaman", "Saya", "🎵", "Nikmati Lagunya", "Terima Kasih", "❤️"];
-    const colors = ["#ff69b4", "#87cefa", "#00ffcc", "#ffa500", "#ffffff"];
+    const words = ["✨ Selamat Datang", "🎧 Nikmati Lagunya", "❤️ Terima Kasih", "🌸 Hari yang Indah", "💫 Semangat!"];
+    const colors = ["#ff69b4", "#9370DB", "#00ced1", "#f39c12", "#2ecc71"];
 
     function createFallingText() {
       const word = words[Math.floor(Math.random() * words.length)];
       const text = document.createElement("div");
       text.className = "falling-text";
       text.style.left = Math.random() * window.innerWidth + "px";
-      text.style.animationDuration = (2 + Math.random() * 3) + "s";
+      text.style.animationDuration = (3 + Math.random() * 4) + "s";
       text.style.color = colors[Math.floor(Math.random() * colors.length)];
       text.innerText = word;
 
       document.body.appendChild(text);
-      setTimeout(() => text.remove(), 5000);
+      setTimeout(() => text.remove(), 7000);
     }
 
-    setInterval(createFallingText, 300);
+    setInterval(createFallingText, 400);
   </script>
 
 </body>
-</html>
+    </html>
