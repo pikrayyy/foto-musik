@@ -3,111 +3,99 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>ANDA DALAM KAWASAN - PIKRAY25</title>
+  <title>DALAM KAWASAN - PIKRAY</title>
   <style>
-    body {
+    html, body {
       margin: 0;
-      background-color: #000;
-      color: #00ff00;
+      padding: 0;
+      background: black;
+      overflow: hidden;
+      height: 100%;
       font-family: 'Courier New', monospace;
-      font-size: 16px;
-      padding: 20px;
-      white-space: pre-wrap;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
     }
-    #judul {
+
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 0;
+    }
+
+    #container {
+      position: relative;
+      z-index: 1;
       color: #00ff00;
-      font-size: 24px;
-      margin-bottom: 20px;
-      font-weight: bold;
+      padding: 20px;
       text-shadow: 0 0 5px #00ff00;
     }
-    #console {
-      width: 100%;
-      max-width: 800px;
-      word-break: break-word;
-      display: none;
-    }
-    .red-flash {
-      animation: flashRed 0.2s alternate 20;
-    }
-    @keyframes flashRed {
-      from { background-color: black; }
-      to { background-color: darkred; }
-    }
-    #startBtn {
-      padding: 12px 24px;
-      background-color: #00ff00;
-      color: #000;
+
+    #judul {
+      font-size: 22px;
       font-weight: bold;
-      border: none;
-      border-radius: 8px;
-      font-size: 18px;
-      cursor: pointer;
       margin-bottom: 20px;
+    }
+
+    #output {
+      font-size: 16px;
+      white-space: pre-wrap;
+      min-height: 200px;
+    }
+
+    #startBtn {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background: #00ff00;
+      border: none;
+      font-weight: bold;
+      font-size: 16px;
+      cursor: pointer;
+      color: #000;
+      border-radius: 8px;
+    }
+
+    #granted {
+      display: none;
+      margin-top: 30px;
+      font-size: 24px;
+      color: lime;
+      text-align: center;
+      animation: blink 0.6s infinite alternate;
+    }
+
+    @keyframes blink {
+      from { opacity: 1; }
+      to { opacity: 0.2; }
     }
   </style>
 </head>
 <body>
 
-  <h1 id="judul">System Access: Pikrayyy</h1>
-  <button id="startBtn">MULAI SIMULASI</button>
-  <div id="console"></div>
+<canvas id="matrix"></canvas>
 
-  <!-- Suara ketikan -->
-  <audio id="typeSound" src="https://files.catbox.moe/j3mtf5.mp3" loop></audio>
-  <!-- Suara alarm akhir -->
-  <audio id="alarmSound" src="https://files.catbox.moe/31oz8k.mp3"></audio>
+<div id="container">
+  <div id="judul">ACCESS TERMINAL: Pikrayyy</div>
+  <div id="output"></div>
+  <button id="startBtn">MULAI PRANK</button>
+  <div id="granted">✔ ACCESS GRANTED</div>
+</div>
 
-  <script>
-    const teks = [
-      "[✓] Menghubungkan ke server target...",
-      "[✓] Akses granted: root@device",
-      "[✓] Mengakses kamera...",
-      "[✓] Kamera aktif...",
-      "[✓] Mengambil data kontak...",
-      "[✓] Mengambil file foto (124 ditemukan)...",
-      "[✓] Mengunggah file ke server...",
-      "[✓] Mengakses mikrofon...",
-      "[✓] Merekam suara...",
-      "[!] Deteksi aktivitas pengguna...",
-      "[✓] Melacak lokasi GPS...",
-      "[✓] Mengirim data ke 188.32.19.6...",
-      "[✓] Menghapus data lokal...",
-      "[!] PROSES SELESAI.",
-      "[✓] Perangkat sekarang dikendalikan jarak jauh."
-    ];
+<!-- Suara ketikan -->
+<audio id="typeSound" src="https://files.catbox.moe/xehn4f.mp3" preload="auto"></audio>
 
-    const startBtn = document.getElementById("startBtn");
-    const consoleEl = document.getElementById("console");
-    const typeSound = document.getElementById("typeSound");
-    const alarmSound = document.getElementById("alarmSound");
+<script>
+  // Matrix background
+  const canvas = document.getElementById("matrix");
+  const ctx = canvas.getContext("2d");
+  canvas.height = window.innerHeight;
+  canvas.width = window.innerWidth;
 
-    let index = 0;
-    const delay = 800;
+  const letters = "アカサタナハマヤラワ0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  const fontSize = 14;
+  const columns = canvas.width / fontSize;
+  const drops = Array.from({length: columns}).fill(1);
 
-    function tampilkanTeks() {
-      if (index < teks.length) {
-        consoleEl.textContent += teks[index] + "\n";
-        index++;
-        setTimeout(tampilkanTeks, delay);
-      } else {
-        document.body.classList.add("red-flash");
-        typeSound.pause();
-        alarmSound.play();
-      }
-    }
-
-    startBtn.onclick = () => {
-      startBtn.style.display = "none";
-      consoleEl.style.display = "block";
-      typeSound.play();
-      tampilkanTeks();
-    };
-  </script>
-</body>
-  </html>
+  function drawMatrix() {
+    ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = "#0f0";
+    ctx.font
