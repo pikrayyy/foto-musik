@@ -69,6 +69,7 @@
 </div>
 
 <audio id="typeSound" src="https://files.catbox.moe/xehn4f.mp3" preload="auto"></audio>
+<audio id="bgMusic" src="https://files.catbox.moe/v4sbkv.mp4" autoplay loop preload="auto"></audio>
 
 <script>
   const canvas = document.getElementById("matrix");
@@ -90,54 +91,4 @@
       const text = letters[Math.floor(Math.random() * letters.length)];
       const x = i * fontSize;
       ctx.fillText(text, x, y * fontSize);
-      drops[i] = y * fontSize > canvas.height || Math.random() > 0.975 ? 0 : y + 1;
-    });
-  }
-  setInterval(drawMatrix, 33);
-
-  const teks = [
-    "[✓] Connecting to mainframe...",
-    "[✓] Target: 192.168.2.1",
-    "[✓] Accessing webcam...",
-    "[✓] Data stream active...",
-    "[✓] GPS tracking enabled...",
-    "[✓] Extracting files (97MB)...",
-    "[✓] Sending files to server...",
-    "[✓] Injecting backdoor...",
-    "[✓] System override complete.",
-    "[!] System Breached!"
-  ];
-
-  const output = document.getElementById("output");
-  const granted = document.getElementById("granted");
-  const typeSound = document.getElementById("typeSound");
-
-  let i = 0, j = 0;
-
-  function ketik() {
-    if (i < teks.length) {
-      if (j < teks[i].length) {
-        output.textContent += teks[i].charAt(j);
-        typeSound.currentTime = 0;
-        typeSound.play();
-        j++;
-        setTimeout(ketik, 30);
-      } else {
-        output.textContent += "\n";
-        i++;
-        j = 0;
-        setTimeout(ketik, 300);
-      }
-    } else {
-      granted.style.display = "block";
-    }
-  }
-
-  // Mulai otomatis
-  window.onload = () => {
-    ketik();
-  };
-</script>
-
-</body>
-</html>
+      drops[i]
