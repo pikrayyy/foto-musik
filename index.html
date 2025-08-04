@@ -9,33 +9,32 @@
       margin: 0;
       padding: 0;
       background: black;
-      color: red;
+      color: #0f0;
       font-family: 'Courier New', monospace;
       overflow: hidden;
       height: 100vh;
     }
 
-    .glitch-text {
+    #matrixCanvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 1;
+    }
+
+    #typewriter {
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
+      font-size: 22px;
+      color: red;
       text-align: center;
-      font-size: 24px;
-      font-weight: bold;
       z-index: 10;
-      animation: glitch 1s infinite;
+      white-space: pre-wrap;
     }
 
-    @keyframes glitch {
-      0% { text-shadow: 2px 2px red, -2px -2px blue; }
-      25% { text-shadow: -2px -2px red, 2px 2px blue; }
-      50% { text-shadow: 2px -2px green, -2px 2px purple; }
-      75% { text-shadow: 2px 2px yellow, -2px -2px cyan; }
-      100% { text-shadow: 0 0 red; }
-    }
-
-    .overlay {
+    #playButton {
       position: absolute;
       top: 65%;
       left: 50%;
@@ -50,82 +49,96 @@
     }
 
     .hidden { display: none; }
-
-    canvas {
-      position: absolute;
-      top: 0;
-      left: 0;
-      z-index: 1;
-    }
   </style>
 </head>
 <body>
 
-  <canvas id="matrixCanvas"></canvas>
+<canvas id="matrixCanvas"></canvas>
 
-  <div id="glitchText" class="glitch-text">DALAM KAWASAN PIKRAY25</div>
-  <button id="playButton" class="overlay">Mulai</button>
+<div id="typewriter">DALAM KAWASAN PIKRAY25</div>
+<button id="playButton">Mulai</button>
 
-  <audio id="bgm" loop>
-    <source src="https://files.catbox.moe/rgie7f.mp4" type="audio/mp4">
-  </audio>
+<audio id="bgm" loop>
+  <source src="https://files.catbox.moe/rgie7f.mp4" type="audio/mp4">
+</audio>
 
-  <script>
-    const messages = [
-      "PERANGKAT ANDA TELAH DIRETAS",
-      "KAMERA TELAH DIAKTIFKAN",
-      "ANDA DIPANTAU OLEH SISTEM",
-      "DATA LOKASI ANDA TELAH TERDETEKSI",
-      "MENGUNDUH FILE PRIBADI...",
-      "MOHON HUBUNGI @FKRIMHLN"
-    ];
+<script>
+  // Matrix background
+  const canvas = document.getElementById("matrixCanvas");
+  const ctx = canvas.getContext("2d");
 
-    let index = 0;
-    const glitchText = document.getElementById("glitchText");
-    const playButton = document.getElementById("playButton");
-    const bgm = document.getElementById("bgm");
+  canvas.height = window.innerHeight;
+  canvas.width = window.innerWidth;
 
-    playButton.addEventListener("click", () => {
-      bgm.play();
-      playButton.classList.add("hidden");
+  const letters = "010101010101110001001";
+  const fontSize = 14;
+  const columns = canvas.width / fontSize;
+  const drops = Array.from({ length: columns }).fill(1);
 
-      setInterval(() => {
-        glitchText.textContent = messages[index];
-        index = (index + 1) % messages.length;
-      }, 2500);
-    });
+  function drawMatrix() {
+    ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    // Matrix effect
-    const canvas = document.getElementById("matrixCanvas");
-    const ctx = canvas.getContext("2d");
+    ctx.fillStyle = "#0F0";
+    ctx.font = fontSize + "px monospace";
 
-    canvas.height = window.innerHeight;
-    canvas.width = window.innerWidth;
+    for (let i = 0; i < drops.length; i++) {
+      const text = letters[Math.floor(Math.random() * letters.length)];
+      ctx.fillText(text, i * fontSize, drops[i] * fontSize);
 
-    const letters = "010101010101110001001";
-    const fontSize = 14;
-    const columns = canvas.width / fontSize;
-    const drops = Array.from({ length: columns }).fill(1);
-
-    function drawMatrix() {
-      ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      ctx.fillStyle = "#0F0";
-      ctx.font = fontSize + "px monospace";
-
-      for (let i = 0; i < drops.length; i++) {
-        const text = letters[Math.floor(Math.random() * letters.length)];
-        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-
-        if (drops[i] * fontSize > canvas.height || Math.random() > 0.975) {
-          drops[i] = 0;
-        }
-        drops[i]++;
+      if (drops[i] * fontSize > canvas.height || Math.random() > 0.975) {
+        drops[i] = 0;
       }
+      drops[i]++;
     }
+  }
 
-    setInterval(drawMatrix, 33);
-  </script>
+  setInterval(drawMatrix, 33);
+
+  // Typewriter effect
+  const messages = [
+    "PERANGKAT ANDA TELAH DIRETAS",
+    "KAMERA TELAH DIAKTIFKAN",
+    "ANDA DIPANTAU OLEH SISTEM",
+    "DATA LOKASI ANDA TELAH TERDETEKSI",
+    "MENGUNDUH FILE PRIBADI...",
+    "MOHON HUBUNGI @FKRIMHLN"
+  ];
+
+  const typewriter = document.getElementById("typewriter");
+  const playButton = document.getElementById("playButton");
+  const bgm = document.getElementById("bgm");
+
+  let messageIndex = 0;
+  let charIndex = 0;
+
+  function typeNextMessage() {
+    if (messageIndex >= messages.length) messageIndex = 0;
+    typewriter.textContent = "";
+
+    const current = messages[messageIndex];
+    charIndex = 0;
+
+    const interval = setInterval(() => {
+      if (charIndex < current.length) {
+        typewriter.textContent += current.charAt(charIndex);
+        charIndex++;
+      } else {
+        clearInterval(interval);
+        setTimeout(() => {
+          messageIndex++;
+          typeNextMessage();
+        }, 2000);
+      }
+    }, 80); // Kecepatan ketik
+  }
+
+  playButton.addEventListener("click", () => {
+    bgm.play();
+    playButton.classList.add("hidden");
+    typeNextMessage();
+  });
+</script>
+
 </body>
 </html>
