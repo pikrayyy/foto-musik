@@ -5,102 +5,82 @@
   <title>DALAM KAWASAN PIKRAY25</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    html, body {
+    body {
       margin: 0;
       padding: 0;
       background: black;
-      overflow: hidden;
-      height: 100%;
+      color: red;
       font-family: 'Courier New', monospace;
+      overflow: hidden;
     }
 
-    canvas {
-      display: block;
-    }
-
-    .title {
-      position: absolute;
-      top: 20px;
-      width: 100%;
-      text-align: center;
-      color: #00ff00;
-      font-size: 22px;
-      font-weight: bold;
-      z-index: 5;
-    }
-
-    .warning {
+    .teks-panik {
       position: absolute;
       top: 50%;
-      width: 100%;
+      left: 50%;
+      transform: translate(-50%, -50%);
       text-align: center;
-      color: red;
-      font-size: 26px;
+      font-size: 24px;
       font-weight: bold;
-      animation: blink 1s infinite;
+      animation: blink 1s step-end infinite;
       z-index: 10;
     }
 
     @keyframes blink {
-      0%, 50%, 100% { opacity: 1; }
-      25%, 75% { opacity: 0; }
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
     }
 
-    audio {
-      display: none;
+    .overlay {
+      position: absolute;
+      top: 60%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      padding: 15px 30px;
+      background-color: red;
+      color: white;
+      border: none;
+      font-size: 18px;
+      cursor: pointer;
+      z-index: 20;
     }
+
+    .hidden { display: none; }
   </style>
 </head>
 <body>
 
-  <!-- Judul -->
-  <div class="title">DALAM KAWASAN PIKRAY25</div>
+  <div id="warning" class="teks-panik">DALAM KAWASAN PIKRAY25</div>
+  <button id="playButton" class="overlay">Mulai</button>
 
-  <!-- Peringatan -->
-  <div class="warning">DATA ANDA SEDANG DIAMBIL...</div>
-
-  <!-- Efek Matrix -->
-  <canvas id="matrix"></canvas>
-
-  <!-- Musik latar -->
-  <audio autoplay loop>
+  <audio id="bgm" loop>
     <source src="https://files.catbox.moe/rgie7f.mp4" type="audio/mp4">
   </audio>
 
   <script>
-    const canvas = document.getElementById("matrix");
-    const ctx = canvas.getContext("2d");
+    const messages = [
+      "PERANGKAT ANDA TELAH DIRETAS",
+      "KAMERA TELAH DIAKTIFKAN",
+      "ANDA DIPANTAU OLEH SISTEM",
+      "DATA LOKASI ANDA TELAH TERDETEKSI",
+      "MENGUNDUH FILE PRIBADI...",
+      "MOHON HUBUNGI @FKRIMHLN"
+    ];
 
-    canvas.height = window.innerHeight;
-    canvas.width = window.innerWidth;
+    let index = 0;
+    const warning = document.getElementById("warning");
+    const playButton = document.getElementById("playButton");
+    const bgm = document.getElementById("bgm");
 
-    const letters = "アァイィウヴエカガキギクグケゲコゴサザシジスズセゼソゾABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-    const matrix = letters.split("");
+    playButton.addEventListener("click", () => {
+      bgm.play();
+      playButton.classList.add("hidden");
 
-    const fontSize = 14;
-    const columns = canvas.width / fontSize;
-    const drops = Array.from({ length: columns }, () => 1);
-
-    function draw() {
-      ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      ctx.fillStyle = "#0F0";
-      ctx.font = `${fontSize}px monospace`;
-
-      for (let i = 0; i < drops.length; i++) {
-        const text = matrix[Math.floor(Math.random() * matrix.length)];
-        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-
-        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
-          drops[i] = 0;
-        }
-        drops[i]++;
-      }
-    }
-
-    setInterval(draw, 33);
+      setInterval(() => {
+        warning.textContent = messages[index];
+        index = (index + 1) % messages.length;
+      }, 2500); // ganti teks tiap 2.5 detik
+    });
   </script>
-
 </body>
 </html>
