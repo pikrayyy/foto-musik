@@ -1,65 +1,48 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="UTF-8">
   <title>DALAM KAWASAN PIKRAY25</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    body {
+    html, body {
       margin: 0;
       padding: 0;
-      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
-      font-family: 'Poppins', sans-serif;
-      color: white;
+      background: black;
       overflow: hidden;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      position: relative;
+      height: 100%;
+      font-family: 'Courier New', monospace;
     }
 
-    /* Logo tengkorak */
-    .logo-skull {
+    canvas {
+      display: block;
+    }
+
+    .logo {
       position: absolute;
       top: 10px;
+      width: 60px;
+      opacity: 0.7;
+      z-index: 10;
+    }
+
+    .logo-left {
       left: 10px;
-      width: 60px;
-      opacity: 0.85;
     }
 
-    /* Logo anonymous */
-    .logo-anon {
-      position: absolute;
-      top: 10px;
+    .logo-right {
       right: 10px;
-      width: 60px;
-      opacity: 0.85;
     }
 
-    .scroll-container {
+    .title {
+      position: absolute;
+      top: 20%;
       width: 100%;
-      overflow: hidden;
-      white-space: nowrap;
-      box-sizing: border-box;
-      padding: 10px;
-    }
-
-    .scroll-text {
-      display: inline-block;
-      animation: scroll-left 15s linear infinite;
-      font-size: 22px;
+      text-align: center;
+      color: #00ff00;
+      font-size: 20px;
       font-weight: bold;
-      color: #ff4d6d;
-    }
-
-    @keyframes scroll-left {
-      0% {
-        transform: translateX(100%);
-      }
-      100% {
-        transform: translateX(-100%);
-      }
+      z-index: 5;
     }
 
     audio {
@@ -69,23 +52,28 @@
 </head>
 <body>
 
-  <!-- Logo tengkorak -->
-  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Skull_icon.svg/1024px-Skull_icon.svg.png" class="logo-skull" alt="tengkorak" />
+  <!-- Logo Tengkorak -->
+  <img src="https://files.catbox.moe/wk0hb3.png" class="logo logo-left" alt="skull">
 
-  <!-- Logo anonymous -->
-  <img src="https://upload.wikimedia.org/wikipedia/commons/0/07/Anonymous_emblem.svg" class="logo-anon" alt="anonymous" />
+  <!-- Logo Anonymous -->
+  <img src="https://files.catbox.moe/efh9nk.png" class="logo logo-right" alt="anonymous">
 
-  <!-- Teks berjalan -->
-  <div class="scroll-container">
-    <div class="scroll-text">
-      🚨 DALAM KAWASAN PIKRAY25 — Akses terbatas | Efek aktif | Suasana misterius 👻
-    </div>
-  </div>
+  <!-- Judul -->
+  <div class="title">DALAM KAWASAN PIKRAY25</div>
+
+  <!-- Canvas efek Matrix -->
+  <canvas id="matrix"></canvas>
 
   <!-- Musik latar -->
   <audio autoplay loop>
     <source src="https://files.catbox.moe/rgie7f.mp4" type="audio/mp4">
   </audio>
 
-</body>
-</html>
+  <script>
+    const canvas = document.getElementById("matrix");
+    const ctx = canvas.getContext("2d");
+
+    canvas.height = window.innerHeight;
+    canvas.width = window.innerWidth;
+
+    const letters = "アァイィウヴエカガキギクグケゲコゴサザシジスズセゼソゾタダチッヂヅテデトドナニヌネノハバ
