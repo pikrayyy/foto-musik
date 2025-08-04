@@ -2,147 +2,90 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DALAM KAWASAN PIKRAY25</title>
   <style>
-    html, body {
+    body {
       margin: 0;
       padding: 0;
-      background: black;
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      font-family: 'Poppins', sans-serif;
+      color: white;
       overflow: hidden;
-      height: 100%;
-      font-family: 'Courier New', monospace;
-    }
-
-    canvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: 0;
-    }
-
-    #container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
       position: relative;
-      z-index: 1;
-      color: #00ff00;
-      padding: 20px;
-      text-shadow: 0 0 5px #00ff00;
     }
 
-    #judul-atas {
-      text-align: center;
-      font-size: 18px;
-      color: #00ff00;
-      text-shadow: 0 0 8px #00ff00;
-      margin-bottom: 20px;
+    /* Logo tengkorak */
+    .logo-skull {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      width: 60px;
+      opacity: 0.85;
     }
 
-    #output {
-      font-size: 16px;
-      white-space: pre-wrap;
-      min-height: 200px;
+    /* Logo anonymous */
+    .logo-anon {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 60px;
+      opacity: 0.85;
     }
 
-    #granted {
+    .scroll-container {
+      width: 100%;
+      overflow: hidden;
+      white-space: nowrap;
+      box-sizing: border-box;
+      padding: 10px;
+    }
+
+    .scroll-text {
+      display: inline-block;
+      animation: scroll-left 15s linear infinite;
+      font-size: 22px;
+      font-weight: bold;
+      color: #ff4d6d;
+    }
+
+    @keyframes scroll-left {
+      0% {
+        transform: translateX(100%);
+      }
+      100% {
+        transform: translateX(-100%);
+      }
+    }
+
+    audio {
       display: none;
-      margin-top: 30px;
-      font-size: 24px;
-      color: red;
-      text-align: center;
-      animation: blink 0.6s infinite alternate;
-    }
-
-    @keyframes blink {
-      from { opacity: 1; }
-      to { opacity: 0.2; }
     }
   </style>
 </head>
 <body>
 
-<canvas id="matrix"></canvas>
+  <!-- Logo tengkorak -->
+  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Skull_icon.svg/1024px-Skull_icon.svg.png" class="logo-skull" alt="tengkorak" />
 
-<div id="container">
-  <div id="judul-atas">DALAM KAWASAN PIKRAY25</div>
-  <div id="output"></div>
-  <div id="granted">⚠ AKSES DIBERIKAN ⚠</div>
-</div>
+  <!-- Logo anonymous -->
+  <img src="https://upload.wikimedia.org/wikipedia/commons/0/07/Anonymous_emblem.svg" class="logo-anon" alt="anonymous" />
 
-<audio id="typeSound" src="https://files.catbox.moe/xehn4f.mp3" preload="auto"></audio>
-<audio id="bgMusic" src="https://files.catbox.moe/v4sbkv.mp4" autoplay loop preload="auto"></audio>
+  <!-- Teks berjalan -->
+  <div class="scroll-container">
+    <div class="scroll-text">
+      🚨 DALAM KAWASAN PIKRAY25 — Akses terbatas | Efek aktif | Suasana misterius 👻
+    </div>
+  </div>
 
-<script>
-  const canvas = document.getElementById("matrix");
-  const ctx = canvas.getContext("2d");
-  canvas.height = window.innerHeight;
-  canvas.width = window.innerWidth;
-
-  const letters = "アカサタナハマヤラワ0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-  const fontSize = 14;
-  const columns = canvas.width / fontSize;
-  const drops = Array.from({length: columns}).fill(1);
-
-  function drawMatrix() {
-    ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = "#0f0";
-    ctx.font = fontSize + "px monospace";
-    drops.forEach((y, i) => {
-      const text = letters[Math.floor(Math.random() * letters.length)];
-      const x = i * fontSize;
-      ctx.fillText(text, x, y * fontSize);
-      drops[i] = y * fontSize > canvas.height || Math.random() > 0.975 ? 0 : y + 1;
-    });
-  }
-  setInterval(drawMatrix, 33);
-
-  const teks = [
-    "[✓] Menghubungkan ke sistem pusat...",
-    "[✓] Lokasi target ditemukan.",
-    "[✓] Mengakses kamera target...",
-    "[✓] Mengaktifkan mikrofon target...",
-    "[✓] Menyalin file pribadi...",
-    "[✓] Mengunggah data ke server rahasia...",
-    "[✓] Menanamkan program pemantauan...",
-    "[✓] Sistem target dikendalikan sepenuhnya.",
-    "[!] PERINGATAN: Data target telah dikunci.",
-    "[!] Misi selesai. Keluar dari sistem..."
-  ];
-
-  const output = document.getElementById("output");
-  const granted = document.getElementById("granted");
-  const typeSound = document.getElementById("typeSound");
-  const bgMusic = document.getElementById("bgMusic");
-
-  let i = 0, j = 0;
-
-  function ketik() {
-    if (i < teks.length) {
-      if (j < teks[i].length) {
-        output.textContent += teks[i].charAt(j);
-        typeSound.currentTime = 0;
-        typeSound.play();
-        j++;
-        setTimeout(ketik, 30);
-      } else {
-        output.textContent += "\n";
-        i++;
-        j = 0;
-        setTimeout(ketik, 400);
-      }
-    } else {
-      granted.style.display = "block";
-    }
-  }
-
-  window.onload = () => {
-    bgMusic.volume = 0.5;
-    bgMusic.play().catch(() => {
-      console.log("Auto-play musik gagal, mungkin dibatasi browser.");
-    });
-    ketik();
-  };
-</script>
+  <!-- Musik latar -->
+  <audio autoplay loop>
+    <source src="https://files.catbox.moe/rgie7f.mp4" type="audio/mp4">
+  </audio>
 
 </body>
 </html>
