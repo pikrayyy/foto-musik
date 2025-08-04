@@ -9,17 +9,15 @@
       margin: 0;
       padding: 0;
       background: black;
-      color: #0f0;
-      font-family: 'Courier New', monospace;
       overflow: hidden;
       height: 100vh;
+      font-family: 'Courier New', monospace;
     }
 
     #matrixCanvas {
       position: absolute;
-      top: 0;
-      left: 0;
-      z-index: 1;
+      top: 0; left: 0;
+      z-index: 0;
     }
 
     #typewriter {
@@ -27,28 +25,22 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      font-size: 22px;
-      color: red;
+      font-size: 24px;
+      color: white;
+      text-shadow: 0 0 8px red;
       text-align: center;
       z-index: 10;
       white-space: pre-wrap;
+      animation: glitch 0.2s infinite;
     }
 
-    #playButton {
-      position: absolute;
-      top: 65%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      padding: 15px 30px;
-      background-color: red;
-      color: white;
-      border: none;
-      font-size: 18px;
-      cursor: pointer;
-      z-index: 20;
+    @keyframes glitch {
+      0% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+      20% { opacity: 0.8; transform: translate(-51%, -50%) scale(1.01); }
+      40% { opacity: 1; transform: translate(-50%, -49%) scale(0.99); }
+      60% { opacity: 0.9; transform: translate(-50.5%, -50.5%) scale(1.02); }
+      100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
     }
-
-    .hidden { display: none; }
   </style>
 </head>
 <body>
@@ -56,46 +48,46 @@
 <canvas id="matrixCanvas"></canvas>
 
 <div id="typewriter">DALAM KAWASAN PIKRAY25</div>
-<button id="playButton">Mulai</button>
 
-<audio id="bgm" loop>
+<audio id="bgm" autoplay loop>
   <source src="https://files.catbox.moe/rgie7f.mp4" type="audio/mp4">
 </audio>
 
+<audio id="notif">
+  <source src="https://assets.mixkit.co/sfx/preview/mixkit-horror-lose-2028.mp3" type="audio/mp3">
+</audio>
+
+<audio id="type">
+  <source src="https://assets.mixkit.co/sfx/preview/mixkit-typewriter-key-1121.mp3" type="audio/mp3">
+</audio>
+
 <script>
-  // Matrix background
+  // Matrix effect
   const canvas = document.getElementById("matrixCanvas");
   const ctx = canvas.getContext("2d");
-
   canvas.height = window.innerHeight;
   canvas.width = window.innerWidth;
-
-  const letters = "010101010101110001001";
+  const letters = "01";
   const fontSize = 14;
   const columns = canvas.width / fontSize;
   const drops = Array.from({ length: columns }).fill(1);
 
   function drawMatrix() {
-    ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+    ctx.fillStyle = "rgba(0,0,0,0.05)";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    ctx.fillStyle = "#0F0";
+    ctx.fillStyle = "#f00";
     ctx.font = fontSize + "px monospace";
-
     for (let i = 0; i < drops.length; i++) {
       const text = letters[Math.floor(Math.random() * letters.length)];
       ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-
-      if (drops[i] * fontSize > canvas.height || Math.random() > 0.975) {
-        drops[i] = 0;
-      }
+      if (drops[i] * fontSize > canvas.height || Math.random() > 0.975) drops[i] = 0;
       drops[i]++;
     }
   }
 
   setInterval(drawMatrix, 33);
 
-  // Typewriter effect
+  // Typewriter
   const messages = [
     "PERANGKAT ANDA TELAH DIRETAS",
     "KAMERA TELAH DIAKTIFKAN",
@@ -106,8 +98,8 @@
   ];
 
   const typewriter = document.getElementById("typewriter");
-  const playButton = document.getElementById("playButton");
-  const bgm = document.getElementById("bgm");
+  const notif = document.getElementById("notif");
+  const type = document.getElementById("type");
 
   let messageIndex = 0;
   let charIndex = 0;
@@ -115,13 +107,14 @@
   function typeNextMessage() {
     if (messageIndex >= messages.length) messageIndex = 0;
     typewriter.textContent = "";
-
     const current = messages[messageIndex];
     charIndex = 0;
 
+    notif.play();
     const interval = setInterval(() => {
       if (charIndex < current.length) {
         typewriter.textContent += current.charAt(charIndex);
+        type.play();
         charIndex++;
       } else {
         clearInterval(interval);
@@ -130,15 +123,13 @@
           typeNextMessage();
         }, 2000);
       }
-    }, 80); // Kecepatan ketik
+    }, 90);
   }
 
-  playButton.addEventListener("click", () => {
-    bgm.play();
-    playButton.classList.add("hidden");
+  window.onload = () => {
     typeNextMessage();
-  });
+  };
 </script>
 
 </body>
-</html>
+  </html>
