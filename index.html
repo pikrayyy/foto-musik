@@ -18,31 +18,32 @@
       display: block;
     }
 
-    .logo {
-      position: absolute;
-      top: 10px;
-      width: 60px;
-      opacity: 0.7;
-      z-index: 10;
-    }
-
-    .logo-left {
-      left: 10px;
-    }
-
-    .logo-right {
-      right: 10px;
-    }
-
     .title {
       position: absolute;
-      top: 20%;
+      top: 20px;
       width: 100%;
       text-align: center;
       color: #00ff00;
-      font-size: 20px;
+      font-size: 22px;
       font-weight: bold;
       z-index: 5;
+    }
+
+    .warning {
+      position: absolute;
+      top: 50%;
+      width: 100%;
+      text-align: center;
+      color: red;
+      font-size: 26px;
+      font-weight: bold;
+      animation: blink 1s infinite;
+      z-index: 10;
+    }
+
+    @keyframes blink {
+      0%, 50%, 100% { opacity: 1; }
+      25%, 75% { opacity: 0; }
     }
 
     audio {
@@ -52,16 +53,13 @@
 </head>
 <body>
 
-  <!-- Logo Tengkorak -->
-  <img src="https://files.catbox.moe/wk0hb3.png" class="logo logo-left" alt="skull">
-
-  <!-- Logo Anonymous -->
-  <img src="https://files.catbox.moe/efh9nk.png" class="logo logo-right" alt="anonymous">
-
   <!-- Judul -->
   <div class="title">DALAM KAWASAN PIKRAY25</div>
 
-  <!-- Canvas efek Matrix -->
+  <!-- Peringatan -->
+  <div class="warning">DATA ANDA SEDANG DIAMBIL...</div>
+
+  <!-- Efek Matrix -->
   <canvas id="matrix"></canvas>
 
   <!-- Musik latar -->
@@ -76,4 +74,33 @@
     canvas.height = window.innerHeight;
     canvas.width = window.innerWidth;
 
-    const letters = "アァイィウヴエカガキギクグケゲコゴサザシジスズセゼソゾタダチッヂヅテデトドナニヌネノハバ
+    const letters = "アァイィウヴエカガキギクグケゲコゴサザシジスズセゼソゾABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    const matrix = letters.split("");
+
+    const fontSize = 14;
+    const columns = canvas.width / fontSize;
+    const drops = Array.from({ length: columns }, () => 1);
+
+    function draw() {
+      ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.fillStyle = "#0F0";
+      ctx.font = `${fontSize}px monospace`;
+
+      for (let i = 0; i < drops.length; i++) {
+        const text = matrix[Math.floor(Math.random() * matrix.length)];
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+          drops[i] = 0;
+        }
+        drops[i]++;
+      }
+    }
+
+    setInterval(draw, 33);
+  </script>
+
+</body>
+</html>
